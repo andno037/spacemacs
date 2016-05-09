@@ -1,3 +1,6 @@
+
+(load-file "~/.emacs.d/init.el")
+
 (require 'package)
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
   (package-initialize)
@@ -5,7 +8,7 @@
 (evil-mode 1)
 
 
-(load-theme 'monokai t)
+(load-theme 'wombat t)
 
 (setq frame-title-format "emacs")
 
@@ -20,6 +23,8 @@
 (ido-mode)
 
 (column-number-mode)
+
+
 
 (show-paren-mode)
 
@@ -39,11 +44,16 @@
 	     t)
 (package-initialize)
 
-(global-set-key (kbd "M-x") 'smex)
+;;(global-set-key (kbd "M-x") 'smex)
 
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
-(ac-config-default)
+;;(ac-config-default)
 
 
+
+(linum-mode)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
