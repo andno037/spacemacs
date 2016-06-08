@@ -27,7 +27,7 @@ values."
      auto-completion
      ;; better-defaults
      emacs-lisp
-     flycheck
+     ;; flycheck
      (c-c++ :variables c-c++-enable-clang-support t)
      (syntax-checking :variables syntax-checking-enable-by-default nil)
      git
@@ -211,7 +211,7 @@ values."
    ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
    ;; derivatives. If set to `relative', also turns on relative line numbers.
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers 'relative
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode nil
@@ -295,8 +295,24 @@ you should place your code here."
   (defun sp-pair-curly-down-sexp (&optional arg)
     (interactive "P")
     (sp-restrict-to-pairs "{" 'sp-next-sexp))
-
- )
+  (defun shell-command-on-buffer ()
+    "Asks for a command and executes it in inferior shell with current buffer
+as input."
+    (interactive)
+    (shell-command-on-region
+     (point-min) (point-max)
+     (read-shell-command "Shell command on buffer: ")))
+  (defun call-something-on-current-buffers-file ()
+    "run a command on the current file and revert the buffer"
+    (interactive)
+    (shell-command 
+     (format "gmock %s" 
+             (shell-quote-argument (buffer-file-name)))))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((R . t)
+     (python . t)))
+  )
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
