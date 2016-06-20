@@ -23,11 +23,13 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     cscope
      gtags
      auto-completion
      ;; better-defaults
      emacs-lisp
-     ;; flycheck
+     flycheck
+     company-clang
      (c-c++ :variables c-c++-enable-clang-support t)
      (syntax-checking :variables syntax-checking-enable-by-default nil)
      git
@@ -40,6 +42,8 @@ values."
      ;; syntax-checking
      ;; version-control
      ranger
+     shell
+     eshell
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -245,7 +249,38 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-  )
+ ;; (eval-after-load 'org
+ ;;      (lambda()
+ ;;        (require 'ob-R)
+ ;;        (require 'ob-emacs-lisp)
+ ;;        (require 'ob-latex)
+ ;;        (require 'octave)
+ ;;        (require 'ob-python)
+ ;;        (require 'ob-sql)
+ ;;        (require 'ob-shell)
+ ;;        (require 'ob-sh)
+ ;;        (require 'ob-sqlite)
+ ;;        (require 'ob-julia)
+ ;;        (require 'ob-perl)
+ ;;        (require 'ob-org)
+ ;;        (require 'ob-awk)
+ ;;        (require 'ob-sed)
+ ;;        (require 'ob-css)
+ ;;        (require 'ob-js)
+ ;;        (require 'ob-stata)
+ ;;        (require 'ob-C)
+ ;;        (setq org-export-babel-evaluate nil)
+ ;;        (setq org-startup-indented t)
+ ;;        ;; increase imenu depth to include third level headings
+ ;;        (setq org-imenu-depth 3)
+ ;;        ;; Set sensible mode for editing dot files
+ ;;        (add-to-list 'org-src-lang-modes '("dot" . graphviz-dot))
+ ;;        ;; Update images from babel code blocks automatically
+ ;;        (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
+ ;;        (setq org-src-fontify-natively t)
+ ;;        (setq org-src-tab-acts-natively t)
+ ;;        (setq org-confirm-babel-evaluate nil)))
+)
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
@@ -254,6 +289,11 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  (setq-default dotspacemacs-configuration-layers
+                '(shell :variables shell-default-shell 'eshell))
+  (setq-default dotspacemacs-configuration-layers
+                '(shell :variables shell-enable-smart-eshell t))
+
 
   (global-set-key [C-M-tab] 'clang-format-region)
 ;;  (set-key c-mode-map  [(tab)] 'company-complete)
@@ -308,11 +348,22 @@ as input."
     (shell-command 
      (format "gmock %s" 
              (shell-quote-argument (buffer-file-name)))))
+
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((R . t)
-     (python . t)))
-  )
+   '(
+     (sh . t)
+     (python . t)
+     (R . t)
+     (ruby . t)
+     (ditaa . t)
+     (dot . t)
+     (octave . t)
+     (sqlite . t)
+     (perl . t)
+     (C . t)
+     ))
+   )
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -344,4 +395,5 @@ as input."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
+ '(ebrowse-root-class ((t (:foreground "cyan" :weight bold)))))
